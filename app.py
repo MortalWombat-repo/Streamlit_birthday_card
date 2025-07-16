@@ -6,30 +6,49 @@ import os
 # Load .env file
 load_dotenv()
 
-# Streamlit Config
 st.set_page_config(page_title="Čestitka", layout="wide")
 
-# Get expected full name from .env or fallback
 EXPECTED_FULL_NAME = os.getenv("EXPECTED_FULL_NAME")
 
 
 def validate_full_name(user_text: str, expected_name: str) -> tuple[bool, str]:
-    """Return (is_valid, normalized_name)."""
     cleaned = " ".join(part for part in user_text.strip().split() if part)
     if len(cleaned.split()) < 2:
         return False, cleaned
     if expected_name is None:
-        # If we don't have an expected name, any two-part name passes.
         return True, cleaned
     if cleaned.lower() != expected_name.strip().lower():
         return False, cleaned
     return True, cleaned
 
 
+# Inject Pacifico font and CSS for the birthday card header
+def inject_pacifico_css():
+    st.markdown("""
+        <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+        <style>
+        .birthday-card-title {
+            font-family: 'Pacifico', cursive !important;
+            font-size: 3rem;
+            color: #ff7f7f; /* Pastel red */
+            margin: 20px 0;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+
+def show_birthday_card(name: str):
+    inject_pacifico_css()
+    st.markdown(f"""
+        <div style="text-align:center; padding: 20px;">
+            <h1 class="birthday-card-title">Sretan rođendan, {name}!</h1>
+            <p style="font-size:1.5rem;">Želimo ti puno zdravlja, sreće i uspjeha! 🥳</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+
 def main():
     ss = st.session_state
-
-    # Initialize session state
     if "authorized" not in ss:
         ss.authorized = False
     if "authorized_name" not in ss:
@@ -64,27 +83,25 @@ def main():
             if ok:
                 ss.authorized = True
                 ss.authorized_name = normalized
-                ss.celebration_pending = True  # trigger on next run
-                st.rerun()  # refresh the UI so input disappears
+                ss.celebration_pending = True
+                st.experimental_rerun()
             else:
                 st.error(
                     "Ime i prezime nisu točni. Molimo unesite točno ime i prezime kako je navedeno u ugovoru."
                 )
     else:
-        # Show a simple inline message (no st.success)
-        st.markdown(
-            f"**Čestitka je autorizirana za:** {ss.authorized_name}. Sretan rođendan! 🥳"
-        )
-
-        # Fire toast + balloons exactly once when authorization first succeeds.
         if ss.celebration_pending and not ss.celebration_done:
             st.toast(
                 f"Čestitka autorizirana za: {ss.authorized_name}! Sretan rođendan! 🥳",
                 icon="🎉",
             )
             st.balloons()
+            time.sleep(3)  # Pause to let balloons finish animation
+            show_birthday_card(ss.authorized_name)
             ss.celebration_pending = False
             ss.celebration_done = True
+        elif ss.celebration_done:
+            show_birthday_card(ss.authorized_name)
 
 
 if __name__ == "__main__":
