@@ -39,6 +39,14 @@ def inject_pacifico_css():
         </style>
     """, unsafe_allow_html=True)
 
+import base64
+
+def get_base64_image(image_path):
+    with open(image_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode()
+
+image_base64 = get_base64_image("img/Pngtree6555382.png")
+
 
 def show_birthday_card(first_name: str):
     inject_pacifico_css()
@@ -47,6 +55,7 @@ def show_birthday_card(first_name: str):
         <h1 class="birthday-card-title">Sretan rođendan, draga {first_name}!</h1>
         <p class="birthday-card-title" style="font-size:1.5rem;">Želimo ti puno zdravlja, sreće i uspjeha! 🥳</p>
         <p class="birthday-card-title" style="font-size:1.5rem;">Vole te tvoji Baka {baka_name}, Teta {teta_name} i {bratic_name}</p>
+        <img src="data:image/png;base64,{image_base64}" style="width:300px; margin-top:10px;"/>
     </div>
     """, unsafe_allow_html=True)
 
