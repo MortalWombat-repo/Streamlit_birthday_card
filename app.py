@@ -43,6 +43,7 @@ def show_birthday_card(first_name: str):
         <div style="text-align:center; padding: 20px;">
             <h1 class="birthday-card-title">Sretan rođendan, draga {first_name}!</h1>
             <p class="birthday-card-title" style="font-size:1.5rem;">Želimo ti puno zdravlja, sreće i uspjeha! 🥳</p>
+            <p class="birthday-card-title" style="font-size:1.5rem;">Vole te tvoji Baka, Teta i Bratić</p>
         </div>
     """, unsafe_allow_html=True)
 
@@ -84,7 +85,7 @@ def main():
                 ss.authorized = True
                 ss.authorized_name = normalized
                 ss.celebration_pending = True
-                #st.experimental_rerun()
+                st.rerun()  # immediately rerun so the 'authorized' branch executes
             else:
                 st.error(
                     "Ime i prezime nisu točni. Molimo unesite točno ime i prezime kako je navedeno u ugovoru."
