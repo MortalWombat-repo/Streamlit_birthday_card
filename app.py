@@ -10,6 +10,9 @@ st.set_page_config(page_title="Čestitka", layout="wide")
 
 EXPECTED_FULL_NAME = os.getenv("EXPECTED_FULL_NAME")
 first_name = os.getenv("FIRST_NAME")
+baka_name = os.getenv("BAKA_NAME")
+teta_name = os.getenv("TETA_NAME")
+bratic_name = os.getenv("BRATIC_NAME")
 
 
 def validate_full_name(user_text: str, expected_name: str) -> tuple[bool, str]:
@@ -40,11 +43,11 @@ def inject_pacifico_css():
 def show_birthday_card(first_name: str):
     inject_pacifico_css()
     st.markdown(f"""
-        <div style="text-align:center; padding: 20px;">
-            <h1 class="birthday-card-title">Sretan rođendan, draga {first_name}!</h1>
-            <p class="birthday-card-title" style="font-size:1.5rem;">Želimo ti puno zdravlja, sreće i uspjeha! 🥳</p>
-            <p class="birthday-card-title" style="font-size:1.5rem;">Vole te tvoji Baka, Teta i Bratić</p>
-        </div>
+    <div style="text-align:center; padding: 20px;">
+        <h1 class="birthday-card-title">Sretan rođendan, draga {first_name}!</h1>
+        <p class="birthday-card-title" style="font-size:1.5rem;">Želimo ti puno zdravlja, sreće i uspjeha! 🥳</p>
+        <p class="birthday-card-title" style="font-size:1.5rem;">Vole te tvoji Baka {baka_name}, Teta {teta_name} i {bratic_name}</p>
+    </div>
     """, unsafe_allow_html=True)
 
 
@@ -88,7 +91,7 @@ def main():
                 st.rerun()  # immediately rerun so the 'authorized' branch executes
             else:
                 st.error(
-                    "Ime i prezime nisu točni. Molimo unesite točno ime i prezime kako je navedeno u ugovoru."
+                    "Ime i prezime nisu točni. Molimo unesite točno ime i prezime kako je navedeno."
                 )
     else:
         if ss.celebration_pending and not ss.celebration_done:
