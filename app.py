@@ -84,7 +84,7 @@ def main():
                 ss.authorized = True
                 ss.authorized_name = normalized
                 ss.celebration_pending = True
-                st.experimental_rerun()
+                #st.experimental_rerun()
             else:
                 st.error(
                     "Ime i prezime nisu točni. Molimo unesite točno ime i prezime kako je navedeno u ugovoru."
