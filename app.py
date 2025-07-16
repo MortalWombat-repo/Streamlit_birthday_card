@@ -9,6 +9,7 @@ load_dotenv()
 st.set_page_config(page_title="Čestitka", layout="wide")
 
 EXPECTED_FULL_NAME = os.getenv("EXPECTED_FULL_NAME")
+first_name = os.getenv("FIRST_NAME")
 
 
 def validate_full_name(user_text: str, expected_name: str) -> tuple[bool, str]:
@@ -30,19 +31,18 @@ def inject_pacifico_css():
         .birthday-card-title {
             font-family: 'Pacifico', cursive !important;
             font-size: 3rem;
-            color: #ff7f7f; /* Pastel red */
             margin: 20px 0;
         }
         </style>
     """, unsafe_allow_html=True)
 
 
-def show_birthday_card(name: str):
+def show_birthday_card(first_name: str):
     inject_pacifico_css()
     st.markdown(f"""
         <div style="text-align:center; padding: 20px;">
-            <h1 class="birthday-card-title">Sretan rođendan, {name}!</h1>
-            <p style="font-size:1.5rem;">Želimo ti puno zdravlja, sreće i uspjeha! 🥳</p>
+            <h1 class="birthday-card-title">Sretan rođendan, draga {first_name}!</h1>
+            <p class="birthday-card-title" style="font-size:1.5rem;">Želimo ti puno zdravlja, sreće i uspjeha! 🥳</p>
         </div>
     """, unsafe_allow_html=True)
 
@@ -97,11 +97,11 @@ def main():
             )
             st.balloons()
             time.sleep(3)  # Pause to let balloons finish animation
-            show_birthday_card(ss.authorized_name)
+            show_birthday_card(first_name)
             ss.celebration_pending = False
             ss.celebration_done = True
         elif ss.celebration_done:
-            show_birthday_card(ss.authorized_name)
+            show_birthday_card(first_name)
 
 
 if __name__ == "__main__":
