@@ -47,15 +47,25 @@ def get_base64_image(image_path):
 
 image_base64 = get_base64_image("img/Pngtree6555382.png")
 
+# Convert to Base64
+def get_audio_base64(file_path):
+    with open(file_path, "rb") as audio_file:
+        return base64.b64encode(audio_file.read()).decode()
+
+audio_base64 = get_audio_base64("music/happy_birthday.mp3")
+
 
 def show_birthday_card(first_name: str):
     inject_pacifico_css()
     st.markdown(f"""
     <div style="text-align:center; padding: 20px;">
-        <h1 class="birthday-card-title">Sretan rođendan, draga {first_name}!</h1>
+        <h1 class="birthday-card-title">🎉 Sretan rođendan, draga {first_name}! 🎉</h1>
         <p class="birthday-card-title" style="font-size:1.5rem;">Želimo ti puno zdravlja, sreće i uspjeha! 🥳</p>
-        <p class="birthday-card-title" style="font-size:1.5rem;">Vole te tvoji Baka {baka_name}, Teta {teta_name} i {bratic_name}</p>
-        <img src="data:image/png;base64,{image_base64}" style="width:300px; margin-top:10px;"/>
+        <p class="birthday-card-title" style="font-size:1.5rem;">Vole te tvoji Baka {baka_name}, Teta i Bratić</p>
+        <img src="data:image/png;base64,{image_base64}" style="width:300px; margin-top:20px;"/>
+        <audio autoplay>
+            <source src="data:audio/mp3;base64,{audio_base64}" type="audio/mp3">
+        </audio>
     </div>
     """, unsafe_allow_html=True)
 
